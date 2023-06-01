@@ -18,7 +18,8 @@ const Agreement = () => {
 
   // console.log(cookie.acessToken);
   const token = cookie?.acessToken;
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     setLoading(true);
     setTimeout(() => {
       navigate(`/payment?access-token=${token}`);
@@ -55,13 +56,14 @@ const Agreement = () => {
         <div className="w-full mt-[32px]">
           <h5>FOR TAX PAYERS ONLY</h5>
         </div>
-        <div className="mt-4">
+        <form onSubmit={handleSubmit} className="mt-4">
           <label htmlFor="understand" className="flex space-x-2  items-start">
             <input
               type="checkbox"
               defaultChecked={true}
               value={isSubscribed}
               onChange={handleChange}
+              required
               id="understand"
               name="understand"
               className="mt-[4px]"
@@ -81,6 +83,7 @@ const Agreement = () => {
               value={iwant}
               onChange={handleChange}
               id="understand"
+              // required
               name="understand"
               className="mt-[4px]"
             />
@@ -91,14 +94,14 @@ const Agreement = () => {
             </span>
           </label>
           <button
-            type="button"
-            onClick={handleSubmit}
-            disabled={isSubscribed === false}
+            type="submit"
+            // onClick={handleSubmit}
+            // disabled={isSubscribed === false}
             className="w-full h-[50px]  mt-[20px]  text-white bg-[#0654df] rounded-[5px]"
           >
             {!loading ? "  CONTINUE" : <ClipLoader size={20} color="white" />}
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );
