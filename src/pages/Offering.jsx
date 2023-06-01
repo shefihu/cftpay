@@ -24,7 +24,7 @@ const Offering = () => {
     initialState
   );
   const { paymentType, isLoading, alertMessage } = state;
-  const [type, setType] = useState("");
+  const [type, setType] = useState("tithe");
   const [amount, setAmount] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,8 @@ const Offering = () => {
 
   const values = { type, amount, message, acessToken };
   // console.log(values);
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     setLoading(true);
     setTimeout(() => {
       navigate("/agreement");
@@ -101,7 +102,11 @@ const Offering = () => {
         <div className="w-full">
           <div className="w-full h-screen flex-col lg:hidden flex max-w-[100%] mx-auto px-[21px] justify-center items-center  ">
             <Logo />
-            <form className="w-full flex mt-[60px] flex-col gap-y-[24px]">
+            <form
+              // method="post"
+              onSubmit={handleSubmit}
+              className="w-full flex mt-[60px] flex-col gap-y-[24px]"
+            >
               <div className=" w-full flex flex-col space-y-[3px]">
                 <label htmlFor="" className="uppercase">
                   Types of donation
@@ -115,6 +120,7 @@ const Offering = () => {
             /> */}
                 <select
                   onChange={(e) => setType(e.target.value)}
+                  required
                   className="w-ull h-[50px] rounded-[5px] outline-none bg-[#0654DF]/5 px-2"
                 >
                   {paymentType.map((type, index) => {
@@ -136,7 +142,6 @@ const Offering = () => {
                     step="0.01"
                     min="0"
                     type="number"
-                    max="20"
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.00"
                     required
@@ -158,8 +163,7 @@ const Offering = () => {
                 ></textarea>
               </div>
               <button
-                type="button"
-                onClick={handleSubmit}
+                type="submit"
                 className="w-full h-[50px] text-white bg-[#0654df] rounded-[5px]"
               >
                 {!loading ? (
@@ -170,6 +174,7 @@ const Offering = () => {
               </button>
             </form>
           </div>
+
           <div className="w-full lg:flex hidden ">
             <h1>Switch to mobile view to view the payment method</h1>
           </div>
