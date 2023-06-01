@@ -93,6 +93,7 @@ const Agreement = () => {
           <button
             type="button"
             onClick={handleSubmit}
+            disabled={isSubscribed === false}
             className="w-full h-[50px]  mt-[20px]  text-white bg-[#0654df] rounded-[5px]"
           >
             {!loading ? "  CONTINUE" : <ClipLoader size={20} color="white" />}

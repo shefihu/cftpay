@@ -13,6 +13,7 @@ const Payment = () => {
   const initialState = {
     paymentMethod: [],
     isLoading: false,
+    paymentLoading: false,
     alertMessage: {},
   };
 
@@ -21,7 +22,7 @@ const Payment = () => {
     initialState
   );
   console.log(selected);
-  const { paymentMethod, isLoading, alertMessage } = state;
+  const { paymentMethod, isLoading, alertMessage, paymentLoading } = state;
   const [payPaystack] = useMutation(PAY_PAYSTACK);
   const [payStripe] = useMutation(PAY_STRIPE);
   const [payTruelayer] = useMutation(PAY_TRUELAYER);
@@ -63,6 +64,10 @@ const Payment = () => {
     }
   };
   const payBtn = async () => {
+    setState({
+      paymentLoading: true,
+    });
+
     // eslint-disable-next-line no-restricted-globals
     if (selected === "PayStack") {
       const response = await payPaystack({
@@ -71,11 +76,11 @@ const Payment = () => {
       console.log(response);
       if (response) {
         window.location = response.data.payWithPayStack.payUrl;
+        setState({
+          // alertMessage: processAlertSuccess("User account activated"),
+          paymentLoading: false,
+        });
       }
-      // setState({
-      //   alertMessage: processAlertSuccess("User account activated"),
-      //   isLoading: false,
-      // })
     } else if (selected === "Stripe") {
       const response = await payStripe({
         variables: { paymentType: selected, amount: Number(amount) },
@@ -83,6 +88,10 @@ const Payment = () => {
       // console.log(response);
       if (response) {
         window.location = response.data.payWithStripe.payUrl;
+        setState({
+          // alertMessage: processAlertSuccess("User account activated"),
+          paymentLoading: false,
+        });
       }
       // setState({
       //   alertMessage: processAlertSuccess("User account activated"),
@@ -95,6 +104,10 @@ const Payment = () => {
       console.log(response);
       if (response) {
         window.location = response.data.payWithTrueLayer.payUrl;
+        setState({
+          // alertMessage: processAlertSuccess("User account activated"),
+          paymentLoading: false,
+        });
       }
     }
   };
@@ -180,7 +193,11 @@ const Payment = () => {
             onClick={payBtn}
             className="w-full h-[50px]  mt-[20px]  text-white bg-[#0654df] rounded-[5px]"
           >
-            {!loading ? "  CONTINUE" : <ClipLoader size={20} color="white" />}
+            {!paymentLoading ? (
+              "  CONTINUE"
+            ) : (
+              <ClipLoader size={20} color="white" />
+            )}
           </button>
         </div>
       )}
